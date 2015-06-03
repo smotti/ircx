@@ -5,6 +5,7 @@ import (
 	"log"
 	"math"
 	"net"
+	"regexp"
 	"time"
 
 	"github.com/sorcix/irc"
@@ -17,6 +18,7 @@ type Bot struct {
 	User         string
 	Options      map[string]bool
 	Data         chan *irc.Message
+	Commands     map[string]string
 	tlsConfig    *tls.Config
 	sender       ServerSender
 	callbacks    map[string][]Callback
@@ -30,6 +32,7 @@ func NewBot(f ...func(*Bot)) *Bot {
 	defaultOpts := map[string]bool{
 		"rejoin":    true,
 		"connected": true,
+        "listenChannel": false,      // false to listen only for commands on PRIVMSG, true for channel and PRIVMSG
 	}
 	b := &Bot{
 		Options:   defaultOpts,
@@ -151,4 +154,20 @@ func (b *Bot) ReadLoop() {
 		}
 		b.Data <- msg
 	}
+}
+
+// isBotCommand checks trailing part of message if it contains an assigned
+// bot command.
+func (b *Bot) isBotCommand(m *irc.Message) (string, bool) {
+	for k, v := range b.Commands {
+		matched, err := regexp.MatchString(v, m.Trailing)
+		if err != nil {
+			log.Println("Error:", err)
+			return "", false
+		}
+		if matched {
+			return k, true
+		}
+	}
+	return "", false
 }

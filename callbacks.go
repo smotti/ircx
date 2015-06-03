@@ -14,6 +14,15 @@ func (b *Bot) messageCallback(m *irc.Message) {
 			go v.Handler.Handle(v.Sender, m)
 		}
 	}
+	if cmd, ok := b.isBotCommand(m); ok {
+        if isQuery(m) || (! isQuery(m) && b.Options["listenChannel"]) {
+		    if data, ok := b.callbacks[cmd]; ok {
+			    for _, v := range data {
+				    go v.Handler.Handle(v.Sender, m)
+			    }
+            }
+		}
+	}
 }
 
 // AddCallback is used to add a callback method for a given action
