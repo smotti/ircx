@@ -66,7 +66,7 @@ func PingHandler(s ircx.Sender, m *irc.Message) {
 func Hello(s ircx.Sender, m *irc.Message) {
   s.Send(&irc.Message{
     Command: irc.PRIVMSG,
-    Params: m.Prefix.Name,
+    Params: []string{m.Prefix.Name},
     Trailing: "hello world",
   })
 }
