@@ -4,6 +4,10 @@ Note
 Add some functions and a Commands map attribute to the Bot. This way one can
 attach specific bot commands in the form of regexp and can add callbacks for
 them to the bot.
+It is also possible to specify if the bot should only listen for commands
+only send via a private query or also listen for them on channels. You can
+do this by setting the option 'listenChannel' to either false (only private
+query) or true to also listen on channels.
 
 Example:
 
