@@ -29,9 +29,9 @@ func (b *Bot) connectMessages() []*irc.Message {
 	return messages
 }
 
-// isQuery checks if the PRIVMSG is a private query or from a channel.
+// IsQuery checks if the PRIVMSG is a private query or from a channel.
 // True if it's a private query.
-func isQuery(m *irc.Message) bool {
+func IsQuery(m *irc.Message) bool {
     if m.Command == irc.PRIVMSG {
         for _, v := range m.Params {
             matched, err := regexp.MatchString("^#.*", v)

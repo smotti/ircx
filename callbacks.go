@@ -15,7 +15,7 @@ func (b *Bot) messageCallback(m *irc.Message) {
 		}
 	}
 	if cmd, ok := b.isBotCommand(m); ok {
-        if isQuery(m) || (! isQuery(m) && b.Options["listenChannel"]) {
+        if IsQuery(m) || (! IsQuery(m) && b.Options["listenChannel"]) {
 		    if data, ok := b.callbacks[cmd]; ok {
 			    for _, v := range data {
 				    go v.Handler.Handle(v.Sender, m)
