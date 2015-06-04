@@ -18,7 +18,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/nickvanw/ircx"
+	"github.com/smotti/ircx"
 	"github.com/sorcix/irc"
 )
 
